@@ -6,90 +6,92 @@
 
 namespace VOI.Certificate.Service.Controllers
 {
+    using Models;
     using System;
     using System.Diagnostics;
+    using System.IO;
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
+    using System.Web;
     using System.Web.Configuration;
     using System.Web.Http;
 
 
+    /// <summary>
+    /// CertificateController
+    /// </summary>
     public class CertificateController : ApiController
     {
         /// <summary>
-        /// Get
+        /// Get Method
         /// </summary>
+        /// <param name="data"></param>
         /// <returns></returns>
-        // GET: API/CERTIFICATE
-        public string Get()
+        // GET: API/CERTIFICATE?BordingPass=
+        public CertificateResponse Get([FromUri]UserData data)
         {
-            return "value";
+            var response = new CertificateResponse();
+
+            if(string.IsNullOrEmpty(data.BoardingPass))
+            {
+                response.Error = "Boarding pass parameter is empty!";
+            }
+            else
+            {
+                response = this.CetificatePFXFile(data.BoardingPass);
+            }
+
+            return response;
         }
 
         /// <summary>
-        /// Get
+        /// Post Method
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="data"></param>
         /// <returns></returns>
-        // GET: API/CERTIFICATE/5
-        public string Get(string text)
-        {
-            var encoded = string.Empty;
-
-            try
-            {
-                encoded = this.CetificatePFXFile(text);
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError(string.Format("Error {0}", DateTime.Now.ToString("dd MMMM yyyy hh:mm:ss")));
-                Trace.TraceError("Error: Get");
-                Trace.TraceError(ex.Message, ex);
-                encoded = ex.ToString();
-            }
-
-            return encoded;
-        }
-
-        /// <summary>
-        /// Post
-        /// </summary>
-        /// <param name="text"></param>
         // POST: api/Certificate
-        public string Post([FromBody]string text)
+        public CertificateResponse Post(UserData data)
         {
-            var encoded = string.Empty;
+            var response = new CertificateResponse();
 
-            try
+            if (string.IsNullOrEmpty(data.BoardingPass))
             {
-                encoded = this.CetificatePFXFile(text);
+                response.Error = "Boarding pass parameter is empty!";
             }
-            catch (Exception ex)
+            else
             {
-                Trace.TraceError(string.Format("Error {0}", DateTime.Now.ToString("dd MMMM yyyy hh:mm:ss")));
-                Trace.TraceError("Error: Post");
-                Trace.TraceError(ex.Message, ex);
-                encoded = ex.ToString();
+                response = this.CetificatePFXFile(data.BoardingPass);
             }
 
-            return encoded;
+            return response;
         }
 
-        private string CetificatePFXFile(string text)
+        /// <summary>
+        /// Cetificates the PFX file.
+        /// </summary>
+        /// <param name="BoardingPass">The boarding pass.</param>
+        /// <returns></returns>
+        private CertificateResponse CetificatePFXFile(string BoardingPass)
         {
-            var encoded = string.Empty;
+            var response = new CertificateResponse();
             var cert = new X509Certificate2();
             var byteConverter = new ASCIIEncoding();
             var collection = new X509Certificate2Collection();
             var path = string.Empty;
             var password = string.Empty;
+            var data = new byte[0];
 
             try
             {
-                path = WebConfigurationManager.AppSettings["PFXPath"];
-                password = WebConfigurationManager.AppSettings["Password"];
-                var data = byteConverter.GetBytes(text);
+                path = HttpContext.Current.Server.MapPath(WebConfigurationManager.AppSettings["PFXPath"]);
+
+                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(WebConfigurationManager.AppSettings["PasswordPath"])))
+                {
+                    password = sr.ReadToEnd();
+                }
+
+                data = byteConverter.GetBytes(BoardingPass);
                 collection.Import(path, password, X509KeyStorageFlags.PersistKeySet);
                 cert = collection[0];
 
@@ -99,8 +101,8 @@ namespace VOI.Certificate.Service.Controllers
                     {
                         var result = ecdsa.SignData(data, HashAlgorithmName.SHA256);
                         var sign = Convert.ToBase64String(result);
-                        encoded = text + "^1" + sign.Length.ToString("X") + sign;
-                        var verify = ecdsa.VerifyData(data, result, HashAlgorithmName.SHA256);
+                        response.Encoded = BoardingPass + "^1" + sign.Length.ToString("X") + sign;
+                        //var verify = ecdsa.VerifyData(data, result, HashAlgorithmName.SHA256);
                     }
                 }
             }
@@ -109,9 +111,10 @@ namespace VOI.Certificate.Service.Controllers
                 Trace.TraceError(string.Format("Error {0}", DateTime.Now.ToString("dd MMMM yyyy hh:mm:ss")));
                 Trace.TraceError("Error: SISAC API - Launcher");
                 Trace.TraceError(ex.Message, ex);
+                response.Error = ex.ToString();
             }
 
-            return encoded;
+            return response;
         }
 
     }

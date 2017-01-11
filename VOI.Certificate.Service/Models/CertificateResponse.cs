@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="PFXFile.cs" company="Volaris">
+// <copyright file="Response.cs" company="Volaris">
 //     Copyright (c) Volaris. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
@@ -12,32 +12,33 @@ namespace VOI.Certificate.Service.Models
     using System.Web;
 
     /// <summary>
-    /// PFXFile class
+    /// Response class
     /// </summary>
-    public class PFXFile
+    public class CertificateResponse
     {
         /// <summary>
-        /// Gets or sets the PFX path.
+        /// Initializes a new instance of the <see cref="CertificateResponse"/> class.
         /// </summary>
-        /// <value>
-        /// The PFX path.
-        /// </value>
-        public string PFXPath { get; set; }
+        public CertificateResponse()
+        {
+            this.Encoded = string.Empty;
+            this.Error = string.Empty;
+        }
 
         /// <summary>
-        /// Gets or sets the password.
+        /// Gets or sets the encoded.
         /// </summary>
         /// <value>
-        /// The password.
+        /// The encoded.
         /// </value>
-        public string Password { get; set; }
+        public string Encoded { get; set; }
 
         /// <summary>
-        /// Gets or sets the text.
+        /// Gets or sets the error.
         /// </summary>
         /// <value>
-        /// The text.
+        /// The error.
         /// </value>
-        public string Text { get; set; }
+        public string Error { get; set; }
     }
 }

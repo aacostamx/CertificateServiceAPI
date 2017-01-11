@@ -19,8 +19,6 @@ namespace VOI.Certificate.Service.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }

@@ -1,30 +1,100 @@
 ﻿@{
-    var PFXPath = System.Web.Configuration.WebConfigurationManager.AppSettings["PFXPath"];
-    var Password = System.Web.Configuration.WebConfigurationManager.AppSettings["Password"];
+    var PFXPath = HttpContext.Current.Server.MapPath(System.Web.Configuration.WebConfigurationManager.AppSettings["PFXPath"]);
+    var PasswordPath = HttpContext.Current.Server.MapPath(System.Web.Configuration.WebConfigurationManager.AppSettings["PasswordPath"]);
+    var CurrentURL = Request.Url + "API/Certificate?BoardingPass=";
 }
 
-<div class="jumbotron">
-    <h1>Certificate API</h1>
-    <p class="lead">Digital Signature SHA256 with ECDSA</p>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Certificate API</h1>
+        <p class="lead">Digital Signature SHA256 with ECDSA</p>
 
-    <br />
-    <h2>API Info</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Web.Config Values</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>PFX Path File</td>
-                <td>@PFXPath</td>
-            </tr>
-            <tr>
-                <td>Password</td>
-                <td>@Password</td>
-            </tr>
-        </tbody>
-    </table>
+        <br />
+        <h2>API Info</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PFX Path File</td>
+                        <td>@PFXPath</td>
+                    </tr>
+                    <tr>
+                        <td>Password Path File</td>
+                        <td>@PasswordPath</td>
+                    </tr>
+                    <tr>
+                        <td>Certificate URL API</td>
+                        <td>@CurrentURL</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Get Certificate</h3>
+        <form>
+            <div class="form-group">
+                <label for="inputBoardingpass">Boarding Pass</label>
+                <input type="text" class="form-control input-lg" id="inputBoardingpass">
+            </div>
+
+            <div class="form-group" name="divSignature" id="divSignature" hidden>
+                <div class="form-group">
+                    <label for="txtSignature">Boarding Pass With Signature</label>
+                    <textarea class="form-control" id="txtSignature" name="txtSignature" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group" name="divEncoded" id="divEncoded" hidden>
+                <div class="form-group">
+                    <label for="txtEncoded">Encoded URL</label>
+                    <textarea class="form-control" id="txtEncoded" name="txtEncoded" rows="3"></textarea>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="CertificateController.GetCertificate()">Get Certificate</button>
+            <button type="button" class="btn btn-primary" onclick="CertificateController.EncodedURL()">Encoded URL</button>
+        </form>
+
+    </div>
 </div>
+
+
+<script>
+    var CertificateController =
+        {
+            EncodedURL: function () {
+                var BoardingPass = $('#inputBoardingpass').val();
+
+                if (BoardingPass) {
+                    var encoded = encodeURIComponent(BoardingPass);
+                    var url = window.location + 'API/Certificate?BoardingPass=' + encoded;
+                    $('#txtEncoded').val(url);
+                    $('#divEncoded').show();
+                }
+                else {
+                    swal("Error", "Boarding Pass is a required field!", "error");
+                }
+            },
+            GetCertificate: function () {
+                var BoardingPass = $('#inputBoardingpass').val();
+
+                if (BoardingPass) {
+                    var url = window.location + 'API/Certificate';
+                    $.post(url, { BoardingPass: BoardingPass })
+                        .done(function (data) {
+                            $('#txtSignature').val(data.Encoded);
+                            $('#divSignature').show();
+                        });
+                }
+                else {
+                    swal("Error", "Boarding Pass is a required field!", "error");
+                }
+            }
+        }
+</script>

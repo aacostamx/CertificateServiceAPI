@@ -1,5 +1,5 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="Response.cs" company="Volaris">
+// <copyright file="PFXFile.cs" company="Volaris">
 //     Copyright (c) Volaris. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
@@ -12,24 +12,16 @@ namespace VOI.Certificate.Service.Models
     using System.Web;
 
     /// <summary>
-    /// Response class
+    /// PFXFile class
     /// </summary>
-    public class Response
+    public class UserData
     {
         /// <summary>
-        /// Gets or sets the encoded.
+        /// Gets or sets the boardingpass.
         /// </summary>
         /// <value>
-        /// The encoded.
+        /// The boardingpass.
         /// </value>
-        public string Encoded { get; set; }
-
-        /// <summary>
-        /// Gets or sets the error.
-        /// </summary>
-        /// <value>
-        /// The error.
-        /// </value>
-        public string Error { get; set; }
+        public string BoardingPass { get; set; }
     }
 }
