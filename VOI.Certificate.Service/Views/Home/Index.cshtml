@@ -1,0 +1,30 @@
+﻿@{
+    var PFXPath = System.Web.Configuration.WebConfigurationManager.AppSettings["PFXPath"];
+    var Password = System.Web.Configuration.WebConfigurationManager.AppSettings["Password"];
+}
+
+<div class="jumbotron">
+    <h1>Certificate API</h1>
+    <p class="lead">Digital Signature SHA256 with ECDSA</p>
+
+    <br />
+    <h2>API Info</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Web.Config Values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PFX Path File</td>
+                <td>@PFXPath</td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td>@Password</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
