@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="PFXFile.cs" company="Volaris">
-//     Copyright (c) Volaris. All rights reserved.
+// <copyright file="PFXFile.cs" company="AACOSTA">
+//     Copyright (c) AACOSTA. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
 

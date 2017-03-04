@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="HomeController.cs" company="Volaris">
-//     Copyright (c) Volaris. All rights reserved.
+// <copyright file="HomeController.cs" company="AACOSTA">
+//     Copyright (c) AACOSTA. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
 

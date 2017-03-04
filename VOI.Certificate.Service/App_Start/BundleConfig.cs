@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="BundleConfig.cs" company="Volaris">
-//     Copyright (c) Volaris. All rights reserved.
+// <copyright file="BundleConfig.cs" company="AACOSTA">
+//     Copyright (c) AACOSTA. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
 

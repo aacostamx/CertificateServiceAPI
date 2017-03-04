@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="Response.cs" company="Volaris">
-//     Copyright (c) Volaris. All rights reserved.
+// <copyright file="Response.cs" company="AACOSTA">
+//     Copyright (c) AACOSTA. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
 

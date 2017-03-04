@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------------------
-// <copyright file="CertificateController.cs" company="Volaris">
-//     Copyright (c) Volaris. All rights reserved.
+// <copyright file="CertificateController.cs" company="AACOSTA">
+//     Copyright (c) AACOSTA. All rights reserved.
 // </copyright>
 //------------------------------------------------------------------------
 
